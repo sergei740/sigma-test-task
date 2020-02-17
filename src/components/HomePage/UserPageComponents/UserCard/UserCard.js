@@ -1,14 +1,15 @@
 import React from 'react';
-import { makeStyles, Button, Typography } from '@material-ui/core';
+import { makeStyles, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   liStyle: {
-    marginBottom: '20px',
+    marginBottom: '25px',
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    width: '90%',
     fontSize: '26px',
+    margin:'auto'
   },
   img: {
     maxWidth: '100%',
@@ -22,31 +23,46 @@ const useStyles = makeStyles(() => ({
     height: '100px',
   },
   name: {
-    width: '200px',
-    textAlign: 'center'
+    width: '30%',
+    textAlign: 'left'
   },
   buttonsContainer: {
-    width: 600,
+    width: '30%',
     display: 'flex',
+    flexWrap:'wrap',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
+  friendStatus:{
+    fontWeight: '300',
+    color:'#655050'
+  }
 }));
 
-const UserCard = (props) => {
+const UserCard = ({ user: { id, name, photo }, isFriend, changeCurrentUserFriendsList, currentUserFriendsList }) => {
   const classes = useStyles();
-  const { id, name, photo, friendStatus } = props.user;
+
+  const handlerCardClick = e => {
+    if ((e.target.getAttribute('data-btn-type') === 'add')
+      || (e.target.parentNode.getAttribute('data-btn-type') === 'add')) {
+      changeCurrentUserFriendsList([...currentUserFriendsList, id]);
+    }
+    if ((e.target.getAttribute('data-btn-type') === 'delete')
+      || (e.target.parentNode.getAttribute('data-btn-type') === 'delete')) {
+      changeCurrentUserFriendsList(currentUserFriendsList.filter(userId => userId !== id));
+    }
+  };
 
   return (
-    <li className={ classes.liStyle }>
-      <div className={ classes.photo }>
-        <img alt={ id } src={ photo } className={ classes.img }/>
+    <li id={id} className={classes.liStyle} onClick={handlerCardClick}>
+      <div className={classes.photo}>
+        <img alt={id} src={photo} className={classes.img}/>
       </div>
-      <div className={ classes.name }>{ `${ name }` }</div>
-      <div className={ classes.buttonsContainer }>
-        { friendStatus ? <Typography variant="h6" gutterBottom>friend</Typography> : null }
-        { friendStatus ? null : <Button variant="contained" color="primary">Add friend</Button> }
-        { friendStatus ? <Button variant="outlined" color="secondary">Remove friend</Button> : null }
-        {/*<Button variant="outlined" color="secondary">Cancel request</Button>*/}
+      <div className={classes.name}>{`${name}`}</div>
+      <div className={classes.buttonsContainer}>
+        {isFriend ? <p className={classes.friendStatus}>friend</p> : null}
+        {isFriend ? null : <Button data-btn-type='add' variant="contained" color="primary">Add friend</Button>}
+        {isFriend ? <Button data-btn-type='delete' variant="contained" color="secondary">Remove friend</Button> : null}
       </div>
     </li>
   )

@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, TextField, Grid } from '@material-ui/core';
+
 import UserCard from "../UserCard/UserCard";
+import users from '../../../../initialState';
 
 const useStyles = makeStyles(() => ({
   textField: {
     margin: '20px 0 20px 40px',
-    width: 500,
-  }
+    width: '40%',
+  },
 }));
 
-const Users = ({ users: usersProp }) => {
+const Users = ({ authorizedUserId }) => {
   const classes = useStyles();
-  const [users, updateUsers] = useState(usersProp);
+  const initialUsersList = users.filter(user => user.id !== authorizedUserId);
+  const [usersList, updateUsers] = useState(initialUsersList);
   const [filterQuery, updateFilterQuery] = useState('');
+  const currentUser = users.find(user => user.id === authorizedUserId);
+  const [currentUserFriendsList, changeCurrentUserFriendsList] = useState(currentUser.friendsList);
 
   useEffect(() => {
-    const filteredUsersList = usersProp.filter(({ name }) => name.toLowerCase().includes(filterQuery.toLowerCase().trim()));
+    updateUsers(initialUsersList);
+  }, []);
+
+  useEffect(() => {
+    const filteredUsersList = initialUsersList.filter(({ name }) => name.toLowerCase().includes(filterQuery.toLowerCase().trim()));
     updateUsers(filteredUsersList);
   }, [filterQuery]);
 
@@ -26,15 +35,25 @@ const Users = ({ users: usersProp }) => {
   };
 
   return (
-    <Grid>
+    <Grid direction='column'>
       <TextField
-        className={ classes.textField }
-        onChange={ inputHandler }
+        className={classes.textField}
+        onChange={inputHandler}
         label="Search user"
         type="search"
         variant="outlined"
       />
-      { users.map((user) => <UserCard key={ user.id } user={ user }/>) }
+      <ul>
+        {usersList.map(user => (
+          <UserCard
+            key={user.id}
+            user={user}
+            changeCurrentUserFriendsList={changeCurrentUserFriendsList}
+            currentUserFriendsList={currentUserFriendsList}
+            isFriend={currentUserFriendsList.includes(user.id)}
+          />
+        ))}
+      </ul>
     </Grid>
   )
 };

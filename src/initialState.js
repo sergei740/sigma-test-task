@@ -3,50 +3,45 @@ export default [
     id: '1',
     name: 'Turkish',
     age: 25,
-    login: 'sergei',
+    login: 'turkish',
     password: '1234',
     photo: '/photos/turkish.jpg',
-    friendStatus: false,
-    friendsList: ['2', '4', '5']
+    friendsList: ['2', '4', '5', '6', '7']
   },
   {
     id: '2',
     name: 'Tommy',
     age: 23,
-    login: 'Dima',
+    login: 'tommy',
     password: '123asda4',
     photo: '/photos/tommy.jpg',
-    friendStatus: false,
-    friendsList: ['1', '3']
+    friendsList: ['1', '3', '5','6', '7']
   },
   {
     id: '3',
     name: 'Mickey O\'Neil',
     age: 21,
-    login: 'Pasha',
-    password: '123aasd4',
+    login: 'mickey',
+    password: '1234',
     photo: '/photos/mickey.jpg',
-    friendStatus: false,
-    friendsList: ['2', '5']
+    friendsList: ['2', '5', '6', '7']
   },
   {
     id: '4',
     name: 'Brick Top',
     age: 27,
-    login: 'Vlad',
-    password: '12asf34',
+    login: 'brickTop',
+    password: '123457',
     photo: '/photos/brickTop.jpg',
-    friendStatus: false,
-    friendsList: ['1', '5']
+    friendsList: ['1', '5', '6', '7']
   },
   {
     id: '5',
     name: 'Vinny',
     age: 28,
-    login: 'lipton',
+    login: 'Vinny',
     password: '123asdf4',
     photo: '/photos/vinny.jpg',
-    friendStatus: false,
     friendsList: ['1', '2', '4', '3']
   },
   {
@@ -56,8 +51,7 @@ export default [
     login: 'fatNick',
     password: '12345',
     photo: '/photos/fatNick.jpg',
-    friendStatus: false,
-    friendsList: ['1', '2', '4', '3']
+    friendsList: ['1', '2', '4', '3', '7']
   },
   {
     id: '7',
@@ -66,7 +60,6 @@ export default [
     login: 'roryBreaker',
     password: '123456',
     photo: '/photos/roryBreaker.jpg',
-    friendStatus: false,
     friendsList: ['1', '2', '4', '3', '6']
   },
 ];

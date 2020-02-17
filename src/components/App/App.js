@@ -1,41 +1,28 @@
 import React, { useState } from 'react';
-import users from '../../initialState';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+
 import LoginPage from "../LoginPage/LoginPage";
 import HomePage from "../HomePage/HomePage";
 
 function App() {
-  const [flag, setFlag] = useState(localStorage.flag ? JSON.parse(localStorage.flag) : false);
-  const [usersList, filterUsersList] = useState(localStorage.users ? [...JSON.parse(localStorage.users)] : users);
-  const [userFriendsList, filterUserFriendsListByUser] = useState(
-    localStorage.friendsList ?
-      [...JSON.parse(localStorage.friendsList)]
-      :
-      users
-  );
+  const [authorizedUserId, setAuthorizedUserId] = useState(localStorage.authorizedUserId || '');
 
   return (
     <Router>
       <Route
         exact
         path="/"
-        render={ () => flag ?
-          <Redirect to='/homePage'/>
-          :
-          <LoginPage
-            users={ users }
-            setFlag={ setFlag }
-            filterUsersList={ filterUsersList }
-            filterUserFriendsListByUser={ filterUserFriendsListByUser }/>
+        render={ () => authorizedUserId
+          ? <Redirect to='/homePage'/>
+          : <LoginPage setAuthorizedUserId={ setAuthorizedUserId }/>
         }
       />
       <Route
         exact
         path="/homePage"
-        render={ () => flag ?
-          <HomePage allUsers={ usersList } setFlag={ setFlag } userFriendsList={ userFriendsList }/>
-          :
-          <Redirect to='/'/>
+        render={ () => authorizedUserId
+          ? <HomePage authorizedUserId={ authorizedUserId } setAuthorizedUserId={ setAuthorizedUserId }/>
+          : <Redirect to='/'/>
         }
       />
     </Router>

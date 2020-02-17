@@ -1,7 +1,31 @@
 import React, { useState } from "react";
+import {
+  Button,
+  Grid,
+  Paper,
+  Tab,
+  Tabs as MuiTabs,
+  makeStyles,
+  Dialog,
+  DialogActions,
+  DialogTitle
+} from '@material-ui/core';
+
+import users from '../../initialState';
 import Users from "./UserPageComponents/Users/Users";
 import Friends from "./UserPageComponents/Friends/Friends";
-import { Tabs as MuiTabs, Tab, Button, Paper, Grid } from '@material-ui/core';
+
+
+const useStyles = makeStyles(() => ({
+  paperStyle: {
+    width: '100%'
+  },
+  logOutBtn: {
+    position: 'absolute',
+    right: 0,
+    height: '48px'
+  }
+}));
 
 const Tabs = {
   USERS: 'USERS',
@@ -13,9 +37,20 @@ const tabsIndex = {
   1: 'FRIENDS'
 };
 
-export default function HomePage({ allUsers, setFlag, userFriendsList }) {
+const HomePage = ({ setAuthorizedUserId, authorizedUserId }) => {
+  const classes = useStyles();
   const [tab, setTab] = useState(Tabs.USERS);
   const [highlightedTabIndex, setHighlightedTabIndex] = useState(0);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleChange = (_, newTabIndex) => {
     setTab(tabsIndex[newTabIndex]);
@@ -24,30 +59,47 @@ export default function HomePage({ allUsers, setFlag, userFriendsList }) {
 
   const exit = () => {
     localStorage.clear();
-    localStorage.setItem('flag', JSON.stringify(false));
-    setFlag(false);
+    setAuthorizedUserId('');
   };
 
   return (
-    <>
+    <Grid>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle id="alert-dialog-title">{"Do you really want to left?"}</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose} variant="outlined">
+            Disagree
+          </Button>
+          <Button onClick={exit} color="primary" variant='contained' autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Grid container justify="space-between">
-        <Paper style={ { width: '92%' } }>
+        <Paper className={classes.paperStyle}>
           <MuiTabs
-            value={ highlightedTabIndex }
+            value={highlightedTabIndex}
             indicatorColor="primary"
             textColor="primary"
-            onChange={ handleChange }
+            onChange={handleChange}
             aria-label="disabled tabs example"
           >
             <Tab label="Users"/>
             <Tab label="Friends"/>
           </MuiTabs>
         </Paper>
-        <Button variant="contained" color="secondary" onClick={ exit }>Log Out</Button>
+        <Button className={classes.logOutBtn} variant="outlined" color="secondary" onClick={handleClickOpen}>Log
+          Out</Button>
       </Grid>
-      { tab === Tabs.USERS && (<Users users={ allUsers }/>) }
-      { tab === Tabs.FRIENDS && <Friends users={ userFriendsList }/> }
-    </>
+      {tab === Tabs.USERS && (
+        <Users users={users} authorizedUserId={authorizedUserId}/>
+      )}
+      {tab === Tabs.FRIENDS && (
+        <Friends users={users} authorizedUserId={authorizedUserId}/>
+      )}
+    </Grid>
   );
-}
+};
+
+export default HomePage;
 
