@@ -39,9 +39,9 @@ const tabsIndex = {
 
 const HomePage = ({ setAuthorizedUserId, authorizedUserId }) => {
   const classes = useStyles();
+
   const [tab, setTab] = useState(Tabs.USERS);
   const [highlightedTabIndex, setHighlightedTabIndex] = useState(0);
-
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {

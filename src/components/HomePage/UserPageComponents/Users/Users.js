@@ -13,15 +13,11 @@ const useStyles = makeStyles(() => ({
 
 const Users = ({ authorizedUserId }) => {
   const classes = useStyles();
+
   const initialUsersList = users.filter(user => user.id !== authorizedUserId);
   const [usersList, updateUsers] = useState(initialUsersList);
   const [filterQuery, updateFilterQuery] = useState('');
-  const currentUser = users.find(user => user.id === authorizedUserId);
-  const [currentUserFriendsList, changeCurrentUserFriendsList] = useState(currentUser.friendsList);
-
-  useEffect(() => {
-    updateUsers(initialUsersList);
-  }, []);
+  const [currentUserFriendsList, changeCurrentUserFriendsList] = useState([...JSON.parse(localStorage.currentUserFriendsList)]);
 
   useEffect(() => {
     const filteredUsersList = initialUsersList.filter(({ name }) => name.toLowerCase().includes(filterQuery.toLowerCase().trim()));
@@ -35,7 +31,7 @@ const Users = ({ authorizedUserId }) => {
   };
 
   return (
-    <Grid direction='column'>
+    <Grid container direction='column'>
       <TextField
         className={classes.textField}
         onChange={inputHandler}

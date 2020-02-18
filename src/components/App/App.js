@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { HashRouter, Route, Redirect } from "react-router-dom";
 
 import LoginPage from "../LoginPage/LoginPage";
 import HomePage from "../HomePage/HomePage";
 
 function App() {
-  const [authorizedUserId, setAuthorizedUserId] = useState(localStorage.authorizedUserId || '');
+  const [authorizedUserId, setAuthorizedUserId] = useState(sessionStorage.authorizedUserId || '');
 
   return (
-    <Router>
+    <HashRouter basename={process.env.PUBLIC_URL}>
       <Route
         exact
         path="/"
-        render={ () => authorizedUserId
+        render={() => authorizedUserId
           ? <Redirect to='/homePage'/>
-          : <LoginPage setAuthorizedUserId={ setAuthorizedUserId }/>
+          : <LoginPage setAuthorizedUserId={setAuthorizedUserId}/>
         }
       />
       <Route
         exact
         path="/homePage"
-        render={ () => authorizedUserId
-          ? <HomePage authorizedUserId={ authorizedUserId } setAuthorizedUserId={ setAuthorizedUserId }/>
+        render={() => authorizedUserId
+          ? <HomePage authorizedUserId={authorizedUserId} setAuthorizedUserId={setAuthorizedUserId}/>
           : <Redirect to='/'/>
         }
       />
-    </Router>
+    </HashRouter>
   );
 }
 

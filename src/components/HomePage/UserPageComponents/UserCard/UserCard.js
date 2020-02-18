@@ -27,15 +27,16 @@ const useStyles = makeStyles(() => ({
     textAlign: 'left'
   },
   buttonsContainer: {
-    width: '30%',
+    width: '35%',
     display: 'flex',
-    flexWrap:'wrap',
+    // flexWrap:'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   friendStatus:{
     fontWeight: '300',
-    color:'#655050'
+    color:'#655050',
+    marginRight:'10px',
   }
 }));
 
@@ -46,10 +47,12 @@ const UserCard = ({ user: { id, name, photo }, isFriend, changeCurrentUserFriend
     if ((e.target.getAttribute('data-btn-type') === 'add')
       || (e.target.parentNode.getAttribute('data-btn-type') === 'add')) {
       changeCurrentUserFriendsList([...currentUserFriendsList, id]);
+      localStorage.setItem('currentUserFriendsList', JSON.stringify([...currentUserFriendsList, id]));
     }
     if ((e.target.getAttribute('data-btn-type') === 'delete')
       || (e.target.parentNode.getAttribute('data-btn-type') === 'delete')) {
       changeCurrentUserFriendsList(currentUserFriendsList.filter(userId => userId !== id));
+      localStorage.setItem('currentUserFriendsList', JSON.stringify(currentUserFriendsList.filter(userId => userId !== id)));
     }
   };
 

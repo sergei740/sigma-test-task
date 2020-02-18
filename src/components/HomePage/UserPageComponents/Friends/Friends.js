@@ -14,20 +14,21 @@ const useStyles = makeStyles(() => ({
 const Friends = ({ users, authorizedUserId }) => {
   const classes = useStyles();
 
+  const [currentUserFriendsList, changeCurrentUserFriendsList] = useState(
+    [...JSON.parse(localStorage.currentUserFriendsList)]
+  );
 
   const usersList = users.filter(user => user.id !== authorizedUserId);
-  const currentUser = users.find(({ id }) => id === authorizedUserId);
-  const friendsList = usersList.filter(({ id }) => currentUser.friendsList.includes(id));
+  const friendsList = usersList.filter(({ id }) => currentUserFriendsList.includes(id));
 
-  const [currentUserFriendsList, changeCurrentUserFriendsList] = useState(currentUser.friendsList);
   const [friends, deleteFriend] = useState(friendsList);
 
   useEffect(() => {
-    deleteFriend(friends.filter(({ id }) => currentUserFriendsList.includes(id)))
+    deleteFriend(friends.filter(({ id }) => currentUserFriendsList.includes(id)));
   }, [currentUserFriendsList]);
 
   return (
-    <Grid direction="column" justify="space-between">
+    <Grid container direction="column" justify="space-between">
       <Grid className={classes.typo}>
         <Typography variant="h3" gutterBottom>Friends</Typography>
       </Grid>

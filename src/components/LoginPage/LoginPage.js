@@ -59,7 +59,8 @@ const LoginPage = ({ setAuthorizedUserId }) => {
       const passwordCheck = filteredUsersListByLogin.filter(user => user.password === password);
       if (passwordCheck.length) {
         const [user] = passwordCheck;
-        localStorage.setItem('authorizedUserId', user.id);
+        sessionStorage.setItem('authorizedUserId', user.id);
+        localStorage.setItem('currentUserFriendsList', JSON.stringify(user.friendsList));
         setAuthorizedUserId(user.id);
         clearFormInputs();
         return true;
@@ -70,7 +71,7 @@ const LoginPage = ({ setAuthorizedUserId }) => {
 
   const submit = e => {
     e.preventDefault();
-    if(!validate(loginValue, passwordValue)) setOpen(true)
+    if (!validate(loginValue, passwordValue)) setOpen(true)
   };
 
   return (
