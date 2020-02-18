@@ -27,9 +27,9 @@ const useStyles = makeStyles(() => ({
     textAlign: 'left'
   },
   buttonsContainer: {
-    width: '35%',
+    width: '30%',
     display: 'flex',
-    // flexWrap:'wrap',
+    flexWrap:'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -63,7 +63,7 @@ const UserCard = ({ user: { id, name, photo }, isFriend, changeCurrentUserFriend
       </div>
       <div className={classes.name}>{`${name}`}</div>
       <div className={classes.buttonsContainer}>
-        {isFriend ? <p className={classes.friendStatus}>friend</p> : null}
+        {isFriend ? <span className={classes.friendStatus}>friend</span> : null}
         {isFriend ? null : <Button data-btn-type='add' variant="contained" color="primary">Add friend</Button>}
         {isFriend ? <Button data-btn-type='delete' variant="contained" color="secondary">Remove friend</Button> : null}
       </div>
